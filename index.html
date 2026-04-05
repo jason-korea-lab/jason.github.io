@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O/B Total 대비 광고비 및 매출 추이</title>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #d1d5db;
+      --line-soft: #e5e7eb;
+      --thead: #f3f4f6;
+      --blue: #1F4E78;
+      --orange: #ED7D31;
+      --green: #70AD47;
+      --blue-soft: #eff6ff;
+      --blue-border: #3b82f6;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', Arial, sans-serif;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    .subtitle {
+      margin: 0 0 24px;
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .summary-item {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+      padding: 18px 18px 16px;
+      border: 1px solid #edf0f4;
+    }
+    .summary-item .k {
+      font-size: 12px;
+      font-weight: 700;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .summary-item .v {
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #111827;
+    }
+    .summary-item .d {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      line-height: 1.3;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    .chart-area {
+      height: 500px;
+      position: relative;
+    }
+
+    .table-wrap {
+      margin-top: 24px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    thead tr {
+      background: var(--thead);
+    }
+    th, td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: #111827;
+    }
+    .right { text-align: right; }
+    .orange { color: #c55a11; font-weight: 600; }
+    .green { color: #4d7c2f; font-weight: 600; }
+    .total-row td {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+
+    .insight {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 24px;
+      border-radius: 4px;
+    }
+    .insight h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #1e40af;
+    }
+    .insight ul {
+      margin: 0;
+      padding-left: 24px;
+      color: #374151;
+    }
+    .insight li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .source {
+      margin-top: 14px;
+      text-align: right;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+    .source a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    @media (max-width: 1024px) {
+      .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .summary-strip { grid-template-columns: 1fr; }
+      .card { padding: 18px; }
+      .chart-area { height: 380px; }
+      h1 { font-size: 26px; }
+      .card h2 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>O/B Total 대비 광고비 및 매출 추이</h1>
+    <p class="subtitle">강남언니/바비톡 플랫폼 분석 (1월~3월) · 최근 3개월 누적 데이터 포함</p>
+
+    <div class="summary-strip">
+      <div class="summary-item">
+        <div class="k">3개월 누적 O/B 매출</div>
+        <div class="v">456,321,550</div>
+        <div class="d">최근 3개월 총 아웃바운드 매출</div>
+      </div>
+      <div class="summary-item">
+        <div class="k">3개월 누적 O/B 광고비</div>
+        <div class="v">231,465,418</div>
+        <div class="d">최근 3개월 총 마케팅비(net)</div>
+      </div>
+      <div class="summary-item">
+        <div class="k">3개월 누적 O/B ROAS</div>
+        <div class="v">197.1%</div>
+        <div class="d">456,321,550 ÷ 231,465,418</div>
+      </div>
+      <div class="summary-item">
+        <div class="k">뷰티앱 누적 매출 비중</div>
+        <div class="v">69.2%</div>
+        <div class="d">강남언니+바비톡 누적 매출 기준</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>O/B Total 대비 광고비 추이</h2>
+      <div class="chart-area">
+        <canvas id="adCostChart"></canvas>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>월</th>
+              <th class="right">O/B Total</th>
+              <th class="right">강남언니</th>
+              <th class="right">강남언니 비중</th>
+              <th class="right">바비톡</th>
+              <th class="right">바비톡 비중</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1월</td>
+              <td class="right">87,214,406</td>
+              <td class="right orange">32,952,890</td>
+              <td class="right orange">37.8%</td>
+              <td class="right green">25,727,998</td>
+              <td class="right green">29.5%</td>
+            </tr>
+            <tr>
+              <td>2월</td>
+              <td class="right">72,391,710</td>
+              <td class="right orange">16,074,462</td>
+              <td class="right orange">22.2%</td>
+              <td class="right green">31,794,240</td>
+              <td class="right green">43.9%</td>
+            </tr>
+            <tr>
+              <td>3월</td>
+              <td class="right">71,859,302</td>
+              <td class="right orange">10,757,448</td>
+              <td class="right orange">15.0%</td>
+              <td class="right green">34,940,068</td>
+              <td class="right green">48.6%</td>
+            </tr>
+            <tr class="total-row">
+              <td>최근 3개월 누적</td>
+              <td class="right">231,465,418</td>
+              <td class="right orange">59,784,800</td>
+              <td class="right orange">25.8%</td>
+              <td class="right green">92,462,306</td>
+              <td class="right green">39.9%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>O/B Total 대비 매출 추이</h2>
+      <div class="chart-area">
+        <canvas id="salesChart"></canvas>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>월</th>
+              <th class="right">O/B Total</th>
+              <th class="right">강남언니</th>
+              <th class="right">강남언니 비중</th>
+              <th class="right">바비톡</th>
+              <th class="right">바비톡 비중</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1월</td>
+              <td class="right">229,229,400</td>
+              <td class="right orange">70,554,600</td>
+              <td class="right orange">30.8%</td>
+              <td class="right green">96,317,400</td>
+              <td class="right green">42.0%</td>
+            </tr>
+            <tr>
+              <td>2월</td>
+              <td class="right">148,108,750</td>
+              <td class="right orange">37,286,800</td>
+              <td class="right orange">25.2%</td>
+              <td class="right green">46,314,750</td>
+              <td class="right green">31.3%</td>
+            </tr>
+            <tr>
+              <td>3월</td>
+              <td class="right">78,983,400</td>
+              <td class="right orange">44,882,000</td>
+              <td class="right orange">56.8%</td>
+              <td class="right green">20,401,000</td>
+              <td class="right green">25.8%</td>
+            </tr>
+            <tr class="total-row">
+              <td>최근 3개월 누적</td>
+              <td class="right">456,321,550</td>
+              <td class="right orange">152,723,400</td>
+              <td class="right orange">33.5%</td>
+              <td class="right green">163,033,150</td>
+              <td class="right green">35.7%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="insight">
+      <h3>📊 주요 인사이트</h3>
+      <ul>
+        <li><strong>광고비:</strong> 강남언니는 O/B Total 대비 광고비 비중이 1월 37.8% → 2월 22.2% → 3월 15.0%로 지속 감소한 반면, 바비톡은 29.5% → 43.9% → 48.6%로 확대되었습니다. [Source](https://www.genspark.ai/api/files/s/SUNkw6Ak)</li>
+        <li><strong>매출:</strong> 1월과 2월에는 바비톡 비중이 더 컸지만, 3월에는 강남언니가 O/B Total 매출의 56.8%를 차지하며 핵심 매출 채널로 전환되었습니다. [Source](https://www.genspark.ai/api/files/s/SUNkw6Ak)</li>
+        <li><strong>누적 효율:</strong> 최근 3개월 누적 기준 뷰티앱(강남언니+바비톡)이 전체 O/B 매출의 69.2%를 차지했고, 누적 ROAS는 207.4%로 기타 O/B 177.4% 대비 우위였습니다. [Source](https://www.genspark.ai/api/files/s/SUNkw6Ak)</li>
+      </ul>
+    </div>
+
+    <div class="source">
+      Source: <a href="https://www.genspark.ai/api/files/s/SUNkw6Ak" target="_blank">2026년 3월 마케팅 회의 자료 - 26년 3월(마감)</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <script>
+    function formatNumber(num) {
+      return Number(num).toLocaleString('ko-KR');
+    }
+
+    const commonOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 16, right: 20, left: 8, bottom: 0 } },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            font: { size: 13 },
+            padding: 15,
+            boxWidth: 16,
+            boxHeight: 16,
+            color: '#374151'
+          }
+        },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          offset: 2,
+          formatter: function(value, context) {
+            const percentage = context.dataset.percentages[context.dataIndex];
+            if (percentage === 100) return formatNumber(value);
+            return formatNumber(value) + '\n(' + percentage + '%)';
+          },
+          font: {
+            size: 10,
+            weight: 'bold',
+            family: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',Arial,sans-serif"
+          },
+          color: '#333',
+          textAlign: 'center',
+          clamp: true,
+          clip: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.dataset.label || '';
+              const value = formatNumber(context.parsed.y);
+              const percentage = context.dataset.percentages[context.dataIndex];
+              return label + ': ' + value + (percentage !== 100 ? ' (' + percentage + '%)' : '');
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#374151', font: { size: 13, weight: '600' } }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: '#e5e7eb' },
+          border: { color: '#d1d5db' },
+          ticks: {
+            color: '#6b7280',
+            callback: function(value) { return formatNumber(value); },
+            font: { size: 12 }
+          }
+        }
+      }
+    };
+
+    const adCostData = {
+      labels: ['1월', '2월', '3월'],
+      datasets: [
+        {
+          label: 'O/B Total 광고비',
+          data: [87214406, 72391710, 71859302],
+          backgroundColor: '#1F4E78',
+          borderColor: '#1F4E78',
+          borderWidth: 1,
+          percentages: [100, 100, 100]
+        },
+        {
+          label: '강남언니 광고비',
+          data: [32952890, 16074462, 10757448],
+          backgroundColor: '#ED7D31',
+          borderColor: '#ED7D31',
+          borderWidth: 1,
+          percentages: [37.8, 22.2, 15.0]
+        },
+        {
+          label: '바비톡 광고비',
+          data: [25727998, 31794240, 34940068],
+          backgroundColor: '#70AD47',
+          borderColor: '#70AD47',
+          borderWidth: 1,
+          percentages: [29.5, 43.9, 48.6]
+        }
+      ]
+    };
+
+    const salesData = {
+      labels: ['1월', '2월', '3월'],
+      datasets: [
+        {
+          label: 'O/B Total 매출',
+          data: [229229400, 148108750, 78983400],
+          backgroundColor: '#1F4E78',
+          borderColor: '#1F4E78',
+          borderWidth: 1,
+          percentages: [100, 100, 100]
+        },
+        {
+          label: '강남언니 매출',
+          data: [70554600, 37286800, 44882000],
+          backgroundColor: '#ED7D31',
+          borderColor: '#ED7D31',
+          borderWidth: 1,
+          percentages: [30.8, 25.2, 56.8]
+        },
+        {
+          label: '바비톡 매출',
+          data: [96317400, 46314750, 20401000],
+          backgroundColor: '#70AD47',
+          borderColor: '#70AD47',
+          borderWidth: 1,
+          percentages: [42.0, 31.3, 25.8]
+        }
+      ]
+    };
+
+    Chart.register(ChartDataLabels);
+
+    new Chart(document.getElementById('adCostChart').getContext('2d'), {
+      type: 'bar',
+      data: adCostData,
+      options: commonOptions
+    });
+
+    new Chart(document.getElementById('salesChart').getContext('2d'), {
+      type: 'bar',
+      data: salesData,
+      options: commonOptions
+    });
+  </script>
+</body>
+</html>
