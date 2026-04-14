@@ -1,478 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>O/B Total 대비 광고비 및 매출 추이</title>
-  <style>
-    :root {
-      --bg: #f9fafb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #d1d5db;
-      --line-soft: #e5e7eb;
-      --thead: #f3f4f6;
-      --blue: #1F4E78;
-      --orange: #ED7D31;
-      --green: #70AD47;
-      --blue-soft: #eff6ff;
-      --blue-border: #3b82f6;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 32px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', Arial, sans-serif;
-    }
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
-      line-height: 1.2;
-      font-weight: 700;
-      color: #1f2937;
-    }
-    .subtitle {
-      margin: 0 0 24px;
-      color: #6b7280;
-      font-size: 16px;
-    }
-
-    .summary-strip {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .summary-item {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
-      padding: 18px 18px 16px;
-      border: 1px solid #edf0f4;
-    }
-    .summary-item .k {
-      font-size: 12px;
-      font-weight: 700;
-      color: #6b7280;
-      margin-bottom: 8px;
-    }
-    .summary-item .v {
-      font-size: 28px;
-      line-height: 1.1;
-      font-weight: 700;
-      color: #111827;
-    }
-    .summary-item .d {
-      margin-top: 6px;
-      font-size: 13px;
-      color: #64748b;
-      line-height: 1.5;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 8px;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
-      padding: 24px;
-      margin-bottom: 32px;
-    }
-    .card h2 {
-      margin: 0 0 16px;
-      font-size: 24px;
-      line-height: 1.3;
-      font-weight: 600;
-      color: #1f2937;
-    }
-    .chart-area {
-      height: 500px;
-      position: relative;
-    }
-
-    .table-wrap {
-      margin-top: 24px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      min-width: 980px;
-      border-collapse: collapse;
-      background: #fff;
-      border: 1px solid var(--line);
-    }
-    thead tr {
-      background: var(--thead);
-    }
-    th, td {
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--line-soft);
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    th {
-      text-align: left;
-      font-weight: 600;
-      color: #111827;
-    }
-    .right { text-align: right; }
-    .orange { color: #c55a11; font-weight: 600; }
-    .green { color: #4d7c2f; font-weight: 600; }
-    .total-row td {
-      background: #f8fafc;
-      font-weight: 700;
-    }
-
-    .insight {
-      background: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 24px;
-      border-radius: 4px;
-    }
-    .insight h3 {
-      margin: 0 0 12px;
-      font-size: 22px;
-      font-weight: 600;
-      color: #1e40af;
-    }
-    .insight ul {
-      margin: 0;
-      padding-left: 24px;
-      color: #374151;
-    }
-    .insight li {
-      margin-bottom: 8px;
-      line-height: 1.6;
-      font-size: 16px;
-    }
-    .source {
-      margin-top: 14px;
-      text-align: right;
-      color: #94a3b8;
-      font-size: 12px;
-    }
-    .source a {
-      color: #6366f1;
-      text-decoration: none;
-    }
-
-    @media (max-width: 1024px) {
-      .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 768px) {
-      body { padding: 20px; }
-      .summary-strip { grid-template-columns: 1fr; }
-      .card { padding: 18px; }
-      .chart-area { height: 380px; }
-      h1 { font-size: 26px; }
-      .card h2 { font-size: 22px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>O/B Total 대비 광고비 및 매출 추이</h1>
-    <p class="subtitle">강남언니/바비톡 플랫폼 분석 (1월~3월) · 최근 3개월 누적 데이터 포함</p>
-
-    <div class="summary-strip">
-      <div class="summary-item">
-        <div class="k">3개월 누적 O/B 매출</div>
-        <div class="v">456,321,550</div>
-        <div class="d">최근 3개월 총 아웃바운드 매출</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>네이버 단체 아이디 운영 거버넌스 | 대표이사 보고 초안</title>
+    <meta name="description" content="네이버 단체 아이디 운영 거버넌스 구축을 위한 대표이사 보고용 5페이지 초안" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div>
+          <p class="eyebrow">CEO REPORT DRAFT</p>
+          <h1>네이버 단체 아이디 운영 거버넌스</h1>
+          <p class="subtitle">대표이사 보고용 5페이지 초안 · GitHub Pages 표준 정적 구조</p>
+        </div>
+        <nav class="quick-nav" aria-label="슬라이드 이동">
+          <a href="#slide-1">1</a>
+          <a href="#slide-2">2</a>
+          <a href="#slide-3">3</a>
+          <a href="#slide-4">4</a>
+          <a href="#slide-5">5</a>
+        </nav>
       </div>
-      <div class="summary-item">
-        <div class="k">3개월 누적 O/B 광고비</div>
-        <div class="v">231,465,418</div>
-        <div class="d">최근 3개월 총 마케팅비(net)</div>
-      </div>
-      <div class="summary-item">
-        <div class="k">3개월 누적 O/B ROAS</div>
-        <div class="v">197.1%</div>
-        <div class="d">456,321,550 ÷ 231,465,418</div>
-      </div>
-      <div class="summary-item">
-        <div class="k">뷰티앱 누적 매출 비중</div>
-        <div class="v">69.2%</div>
-        <div class="d">강남언니+바비톡 누적 매출 기준</div>
-      </div>
-    </div>
+    </header>
 
-    <div class="card">
-      <h2>O/B Total 대비 광고비 추이</h2>
-      <div class="chart-area">
-        <canvas id="adCostChart"></canvas>
-      </div>
+    <main class="container slides">
+      <section id="slide-1" class="slide">
+        <div class="slide-no">01</div>
+        <div class="slide-body">
+          <p class="section-label">배경 및 현황</p>
+          <h2>현업 중심 운영에서 회사 통제형 운영으로 전환이 필요합니다</h2>
+          <div class="grid two">
+            <div class="card">
+              <h3>현재 상황</h3>
+              <ul>
+                <li>전략기획본부, 마케팅본부, 경영지원본부 및 하위 마케팅 조직별로 외부 플랫폼 계정 관리 수요가 증가</li>
+                <li>우선 이니셔티브로 네이버 단체 아이디 관리 체계 수립 필요</li>
+                <li>계정이 업무 자산임에도 현업 중심 운영 시 소유·관리·복구 책임이 불명확해질 가능성 존재</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>공식 구조의 핵심</h3>
+              <ul>
+                <li>네이버 단체 아이디는 단체 정보 기반 계정</li>
+                <li>관리자와 멤버가 함께 사용하는 공유형 구조</li>
+                <li>관리자는 생성·수정·통제의 핵심 권한을 보유</li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight">
+            핵심 메시지: 네이버 단체 아이디는 단순 로그인 계정이 아니라, 관리자 권한에 통제가 집중된 <strong>회사 자산형 공유 계정</strong>입니다.
+          </div>
+        </div>
+      </section>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>월</th>
-              <th class="right">O/B Total</th>
-              <th class="right">강남언니</th>
-              <th class="right">강남언니 비중</th>
-              <th class="right">바비톡</th>
-              <th class="right">바비톡 비중</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1월</td>
-              <td class="right">87,214,406</td>
-              <td class="right orange">32,952,890</td>
-              <td class="right orange">37.8%</td>
-              <td class="right green">25,727,998</td>
-              <td class="right green">29.5%</td>
-            </tr>
-            <tr>
-              <td>2월</td>
-              <td class="right">72,391,710</td>
-              <td class="right orange">16,074,462</td>
-              <td class="right orange">22.2%</td>
-              <td class="right green">31,794,240</td>
-              <td class="right green">43.9%</td>
-            </tr>
-            <tr>
-              <td>3월</td>
-              <td class="right">71,859,302</td>
-              <td class="right orange">10,757,448</td>
-              <td class="right orange">15.0%</td>
-              <td class="right green">34,940,068</td>
-              <td class="right green">48.6%</td>
-            </tr>
-            <tr class="total-row">
-              <td>최근 3개월 누적</td>
-              <td class="right">231,465,418</td>
-              <td class="right orange">59,784,800</td>
-              <td class="right orange">25.8%</td>
-              <td class="right green">92,462,306</td>
-              <td class="right green">39.9%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <section id="slide-2" class="slide">
+        <div class="slide-no">02</div>
+        <div class="slide-body">
+          <p class="section-label">왜 지금 필요한가</p>
+          <h2>거버넌스 부재 시 운영 효율보다 통제 리스크가 더 커집니다</h2>
+          <div class="grid three">
+            <div class="card">
+              <h3>업무 연속성</h3>
+              <p>관리자 연락처와 인증 수단이 개인에게 귀속되면 퇴사·이동 시 계정 복구와 인수인계에 차질이 발생할 수 있습니다.</p>
+            </div>
+            <div class="card">
+              <h3>보안·권한 관리</h3>
+              <p>멤버 비밀번호 발급·회수 체계가 없으면 외주·프로젝트 종료 후에도 접근이 잔존할 수 있습니다.</p>
+            </div>
+            <div class="card">
+              <h3>서비스 적합성</h3>
+              <p>단체 아이디는 일부 서비스 이용 제한이 있어, 개설 전 용도 적합성 검토가 필요합니다.</p>
+            </div>
+          </div>
+          <div class="metric-row">
+            <div class="metric">
+              <span class="metric-title">의사결정 포인트 1</span>
+              <strong>계정 소유권의 회사 귀속</strong>
+            </div>
+            <div class="metric">
+              <span class="metric-title">의사결정 포인트 2</span>
+              <strong>관리자 권한의 중앙 통제</strong>
+            </div>
+            <div class="metric">
+              <span class="metric-title">의사결정 포인트 3</span>
+              <strong>발급·회수의 표준화</strong>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="card">
-      <h2>O/B Total 대비 매출 추이</h2>
-      <div class="chart-area">
-        <canvas id="salesChart"></canvas>
-      </div>
+      <section id="slide-3" class="slide">
+        <div class="slide-no">03</div>
+        <div class="slide-body">
+          <p class="section-label">주요 리스크와 통제 포인트</p>
+          <h2>핵심 리스크는 ‘복구 불능’, ‘권한 잔존’, ‘책임 불명확’입니다</h2>
+          <div class="risk-table-wrap">
+            <table class="risk-table">
+              <thead>
+                <tr>
+                  <th>리스크</th>
+                  <th>발생 시나리오</th>
+                  <th>통제 포인트</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>복구 불능</td>
+                  <td>관리자 이메일/휴대전화가 개인 기준으로 등록되어 퇴사 후 인증 불가</td>
+                  <td>회사 통제 수단으로 관리자 연락처 표준화</td>
+                </tr>
+                <tr>
+                  <td>권한 잔존</td>
+                  <td>퇴사자·외주 인력 계정 접근 회수 누락</td>
+                  <td>발급·회수 요청/승인/실행 로그와 당일 회수 원칙 적용</td>
+                </tr>
+                <tr>
+                  <td>책임 불명확</td>
+                  <td>실사용 부서와 관리자 책임이 혼재되어 사고 발생 시 대응 지연</td>
+                  <td>업무 오너와 중앙 관리자 역할 분리</td>
+                </tr>
+                <tr>
+                  <td>부적합 사용</td>
+                  <td>단체 아이디로 제한되는 서비스에 계정을 잘못 투입</td>
+                  <td>신규 개설 전 사용 목적과 서비스 적합성 검토</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight danger">
+            핵심 메시지: 관리자 권한은 멤버 비밀번호 발급·회수, 정보 수정, 보호조치 해제, 비밀번호 찾기의 관문이므로 <strong>중앙 통제 실패 = 계정 통제 실패</strong>로 이어질 수 있습니다.
+          </div>
+        </div>
+      </section>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>월</th>
-              <th class="right">O/B Total</th>
-              <th class="right">강남언니</th>
-              <th class="right">강남언니 비중</th>
-              <th class="right">바비톡</th>
-              <th class="right">바비톡 비중</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1월</td>
-              <td class="right">229,229,400</td>
-              <td class="right orange">70,554,600</td>
-              <td class="right orange">30.8%</td>
-              <td class="right green">96,317,400</td>
-              <td class="right green">42.0%</td>
-            </tr>
-            <tr>
-              <td>2월</td>
-              <td class="right">148,108,750</td>
-              <td class="right orange">37,286,800</td>
-              <td class="right orange">25.2%</td>
-              <td class="right green">46,314,750</td>
-              <td class="right green">31.3%</td>
-            </tr>
-            <tr>
-              <td>3월</td>
-              <td class="right">78,983,400</td>
-              <td class="right orange">44,882,000</td>
-              <td class="right orange">56.8%</td>
-              <td class="right green">20,401,000</td>
-              <td class="right green">25.8%</td>
-            </tr>
-            <tr class="total-row">
-              <td>최근 3개월 누적</td>
-              <td class="right">456,321,550</td>
-              <td class="right orange">152,723,400</td>
-              <td class="right orange">33.5%</td>
-              <td class="right green">163,033,150</td>
-              <td class="right green">35.7%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <section id="slide-4" class="slide">
+        <div class="slide-no">04</div>
+        <div class="slide-body">
+          <p class="section-label">운영 원칙 및 역할</p>
+          <h2>‘업무 오너는 현업, 관리자 통제는 중앙’ 원칙으로 운영합니다</h2>
+          <div class="principles">
+            <span>① 소유와 사용의 분리</span>
+            <span>② 관리자 권한 중앙 통제</span>
+            <span>③ 계정 생애주기 관리</span>
+            <span>④ 증적 기반 운영</span>
+          </div>
+          <div class="risk-table-wrap">
+            <table class="risk-table role-table">
+              <thead>
+                <tr>
+                  <th>조직</th>
+                  <th>주요 역할</th>
+                  <th>책임</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>전략기획본부</td>
+                  <td>정책 오너 / 예외 승인</td>
+                  <td>운영 원칙 승인, 예외 기준 승인, 정기 보고 수신</td>
+                </tr>
+                <tr>
+                  <td>마케팅본부</td>
+                  <td>업무 오너</td>
+                  <td>계정 필요성 검토, 사용 목적 정의, 폐기 필요성 판단</td>
+                </tr>
+                <tr>
+                  <td>하위 마케팅 조직</td>
+                  <td>실사용자 / 요청자</td>
+                  <td>신규 개설·멤버 발급·변경·회수 요청, 사용 현황 보고</td>
+                </tr>
+                <tr>
+                  <td>경영지원본부</td>
+                  <td>중앙 관리자 / 통제 부서</td>
+                  <td>관리자 지정, 등록 정보 보관, 발급·회수 실행, 정기 점검</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-    <div class="insight">
-      <h3>📊 주요 인사이트</h3>
-      <ul>
-        <li><strong>광고비:</strong> 강남언니는 O/B Total 대비 광고비 비중이 1월 37.8% → 2월 22.2% → 3월 15.0%로 지속 감소한 반면, 바비톡은 29.5% → 43.9% → 48.6%로 확대되었습니다. </li>
-        <li><strong>매출:</strong> 1월과 2월에는 바비톡 비중이 더 컸지만, 3월에는 강남언니가 O/B Total 매출의 56.8%를 차지하며 핵심 매출 채널로 전환되었습니다. </li>
-        <li><strong>누적 효율:</strong> 최근 3개월 누적 기준 뷰티앱(강남언니+바비톡)이 전체 O/B 매출의 69.2%를 차지했고, 누적 ROAS는 207.4%로 기타 O/B 177.4% 대비 우위였습니다. </li>
-      </ul>
-    </div>
+      <section id="slide-5" class="slide">
+        <div class="slide-no">05</div>
+        <div class="slide-body">
+          <p class="section-label">실행 일정 및 요청 사항</p>
+          <h2>6개월 내 관리 체계 정착이 가능하며, 우선 전수조사부터 시작해야 합니다</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-period">0~1개월</div>
+              <div class="timeline-content">
+                <h3>전수조사 및 기준 수립</h3>
+                <p>보유 계정 전수조사, 계정대장 작성, 명명 규칙 수립, 관리자 기준 정의</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-period">1~3개월</div>
+              <div class="timeline-content">
+                <h3>정비 및 전환</h3>
+                <p>개인 기준 계정 정비, 단체 아이디 전환/신규 개설, 관리자 연락처 재지정, 멤버 발급·회수 프로세스 도입</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-period">3~6개월</div>
+              <div class="timeline-content">
+                <h3>정착 및 점검</h3>
+                <p>분기 점검 운영, 미사용 계정 폐기, 예외 승인 체계 운영, 경영진 보고 체계 정착</p>
+              </div>
+            </div>
+          </div>
+          <div class="decision-box">
+            <h3>대표이사 의사결정 요청</h3>
+            <ol>
+              <li>네이버 계정의 회사 자산 관리 원칙 승인</li>
+              <li>경영지원본부 중심의 관리자 중앙 통제 체계 승인</li>
+              <li>전사 외부 플랫폼 계정 거버넌스로의 확장 추진 승인</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </main>
 
-    <div class="source">
-      Source: <a href="https://www.genspark.ai/api/files/s/SUNkw6Ak" target="_blank">2026년 3월 마케팅 회의 자료 - 26년 3월(마감)</a>
-    </div>
-  </div>
+    <footer class="footer container">
+      <p>
+        참고: 네이버 고객센터 단체 아이디 안내 문서를 기준으로 작성됨 ·
+        <a href="https://help.naver.com/service/5640/contents/6431?lang=ko&osType=COMMONOS" target="_blank" rel="noreferrer">단체 아이디 소개</a>,
+        <a href="https://help.naver.com/service/5640/contents/6432?lang=ko" target="_blank" rel="noreferrer">가입 방법</a>,
+        <a href="https://help.naver.com/service/5640/contents/6440?lang=ko" target="_blank" rel="noreferrer">멤버 비밀번호 발급</a>,
+        <a href="https://help.naver.com/service/5640/contents/6436?lang=ko" target="_blank" rel="noreferrer">멤버 비밀번호 회수</a>,
+        <a href="https://help.naver.com/service/5640/contents/10180?lang=ko" target="_blank" rel="noreferrer">정보 수정</a>,
+        <a href="https://help.naver.com/service/5640/contents/23868?lang=ko" target="_blank" rel="noreferrer">관리자 변경</a>
+      </p>
+    </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-  <script>
-    function formatNumber(num) {
-      return Number(num).toLocaleString('ko-KR');
-    }
-
-    const commonOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: { padding: { top: 16, right: 20, left: 8, bottom: 0 } },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom',
-          labels: {
-            font: { size: 13 },
-            padding: 15,
-            boxWidth: 16,
-            boxHeight: 16,
-            color: '#374151'
-          }
-        },
-        datalabels: {
-          anchor: 'end',
-          align: 'top',
-          offset: 2,
-          formatter: function(value, context) {
-            const percentage = context.dataset.percentages[context.dataIndex];
-            if (percentage === 100) return formatNumber(value);
-            return formatNumber(value) + '\n(' + percentage + '%)';
-          },
-          font: {
-            size: 10,
-            weight: 'bold',
-            family: "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',Arial,sans-serif"
-          },
-          color: '#333',
-          textAlign: 'center',
-          clamp: true,
-          clip: false
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              const label = context.dataset.label || '';
-              const value = formatNumber(context.parsed.y);
-              const percentage = context.dataset.percentages[context.dataIndex];
-              return label + ': ' + value + (percentage !== 100 ? ' (' + percentage + '%)' : '');
-            }
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { display: false },
-          ticks: { color: '#374151', font: { size: 13, weight: '600' } }
-        },
-        y: {
-          beginAtZero: true,
-          grid: { color: '#e5e7eb' },
-          border: { color: '#d1d5db' },
-          ticks: {
-            color: '#6b7280',
-            callback: function(value) { return formatNumber(value); },
-            font: { size: 12 }
-          }
-        }
-      }
-    };
-
-    const adCostData = {
-      labels: ['1월', '2월', '3월'],
-      datasets: [
-        {
-          label: 'O/B Total 광고비',
-          data: [87214406, 72391710, 71859302],
-          backgroundColor: '#1F4E78',
-          borderColor: '#1F4E78',
-          borderWidth: 1,
-          percentages: [100, 100, 100]
-        },
-        {
-          label: '강남언니 광고비',
-          data: [32952890, 16074462, 10757448],
-          backgroundColor: '#ED7D31',
-          borderColor: '#ED7D31',
-          borderWidth: 1,
-          percentages: [37.8, 22.2, 15.0]
-        },
-        {
-          label: '바비톡 광고비',
-          data: [25727998, 31794240, 34940068],
-          backgroundColor: '#70AD47',
-          borderColor: '#70AD47',
-          borderWidth: 1,
-          percentages: [29.5, 43.9, 48.6]
-        }
-      ]
-    };
-
-    const salesData = {
-      labels: ['1월', '2월', '3월'],
-      datasets: [
-        {
-          label: 'O/B Total 매출',
-          data: [229229400, 148108750, 78983400],
-          backgroundColor: '#1F4E78',
-          borderColor: '#1F4E78',
-          borderWidth: 1,
-          percentages: [100, 100, 100]
-        },
-        {
-          label: '강남언니 매출',
-          data: [70554600, 37286800, 44882000],
-          backgroundColor: '#ED7D31',
-          borderColor: '#ED7D31',
-          borderWidth: 1,
-          percentages: [30.8, 25.2, 56.8]
-        },
-        {
-          label: '바비톡 매출',
-          data: [96317400, 46314750, 20401000],
-          backgroundColor: '#70AD47',
-          borderColor: '#70AD47',
-          borderWidth: 1,
-          percentages: [42.0, 31.3, 25.8]
-        }
-      ]
-    };
-
-    Chart.register(ChartDataLabels);
-
-    new Chart(document.getElementById('adCostChart').getContext('2d'), {
-      type: 'bar',
-      data: adCostData,
-      options: commonOptions
-    });
-
-    new Chart(document.getElementById('salesChart').getContext('2d'), {
-      type: 'bar',
-      data: salesData,
-      options: commonOptions
-    });
-  </script>
-</body>
+    <script src="./assets/js/main.js"></script>
+  </body>
 </html>
